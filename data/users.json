@@ -1,0 +1,14 @@
+[
+    {
+        "fullName": "Padila Padli",
+        "gender": "Male",
+        "age": 23,
+        "LoginId": "2"
+    },
+    {
+        "fullName": "Tono su Tini",
+        "gender": "Female",
+        "age": 20,
+        "LoginId": "3"
+    }
+]

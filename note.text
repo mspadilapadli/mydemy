@@ -17,3 +17,9 @@
      *addColum
      npx sequelize  migration:create --name addDurationToCourses
 
+- seed
+     npx sequelize seed:create --name seedCategories
+     npx sequelize seed:create --name seedUserLog
+      npx sequelize seed:create --name seedCourses  
+      npx sequelize seed:create --name seedUsers  
+      npx sequelize seed:create --name seedUserCourses  
