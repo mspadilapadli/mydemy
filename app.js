@@ -1,8 +1,10 @@
-// Happy coding guys
 const express = require("express");
 const app = express();
 const port = 3000;
 
+// app.get("/", (req, res) => {
+//     res.send("Iki Betamart");
+// });
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use("/", require("./routers"));
