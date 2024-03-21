@@ -1,0 +1,38 @@
+[
+    {
+        "name": "JavaScript",
+        "description": "JS is the best for Web",
+        "CategoryId": 1,
+        "duration": "16 Weeks"
+    },
+    {
+        "name": "HTML",
+        "description": "HTML is the best",
+        "CategoryId": 1,
+        "duration": "6 Weeks"
+    },
+    {
+        "name": "CSS",
+        "description": "Make beatiful UI",
+        "CategoryId": 1,
+        "duration": "4 Weeks"
+    },
+    {
+        "name": "Java",
+        "description": "Base on Mobile",
+        "CategoryId": 2,
+        "duration": "16 Weeks"
+    },
+    {
+        "name": "Flutter",
+        "description": "Hybrid Programing Language",
+        "CategoryId": 2,
+        "duration": "16 Weeks"
+    },
+    {
+        "name": "Kotlin",
+        "description": "Hybrid Programing Language",
+        "CategoryId": 2,
+        "duration": "16 Weeks"
+    }
+]
