@@ -1,0 +1,19 @@
+- buat model dan migration sesuai soal (buat dari yg tidak ada foreign key)
+    *Categories
+    npx sequelize model:create --name Category --attributes name:string
+
+    *UserLog
+    npx sequelize model:create --name UserLog --attributes email:string,password:string,role:string
+
+    *Courses  
+     npx sequelize model:create --name Course --attributes name:string,description:string,CategoryId:integer
+    
+    *Users  
+     npx sequelize model:create --name User --attributes fullName:string,gender:string,age:integer,LoginId:integer
+
+    *UserCourses  
+     npx sequelize model:create --name UserCourse --attributes CourseId:integer,UserId:integer
+
+     *addColum
+     npx sequelize  migration:create --name addDurationToCourses
+
