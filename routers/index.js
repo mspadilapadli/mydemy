@@ -6,7 +6,7 @@ const Controller = require("../controllers/controller");
 router.get("/", Controller.home); //home : login dan register
 // router.get("/logout");
 router.get("/courses", Controller.readCourses);
-router.get("/courses/detail", Controller.courseDetail);
+router.get("/courses/detail/:id", Controller.courseDetail);
 
 router.get("/courses/add", Controller.addCourse);
 router.post("/courses/add", Controller.postAddCourse);
