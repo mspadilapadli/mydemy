@@ -2,8 +2,67 @@ const e = require("express");
 const { param } = require("../routers");
 const { Category, Course, User, UserCourse, UserLog } = require("../models");
 const { Op } = require("sequelize");
+const bcrypt = require("bcryptjs");
 
 class Controller {
+    //?===== Register & Login =====
+
+    static async register(req, res) {
+        try {
+            res.render("form-register");
+        } catch (error) {
+            res.send(error);
+        }
+    }
+    static async postRegister(req, res) {
+        try {
+            // console.log(req.body);
+            const { email, password, role } = req.body;
+            await UserLog.create({ email, password, role });
+            res.redirect("/login");
+        } catch (error) {
+            res.send(error);
+        }
+    }
+
+    static async login(req, res) {
+        try {
+            const { error } = req.query;
+            res.render("form-login", { error });
+        } catch (error) {
+            res.send(error);
+        }
+    }
+    static async postLogin(req, res) {
+        try {
+            // res.render("form-regsiter");
+            const { email, password } = req.body;
+            let user = await UserLog.findOne({
+                where: {
+                    email,
+                },
+            });
+            if (user) {
+                const isValidPassword = bcrypt.compareSync(
+                    password,
+                    user.password
+                );
+                if (isValidPassword) {
+                    return res.redirect("/courses");
+                } else {
+                    const error = `Invalid email or password`;
+                    return res.redirect(`/login?error=${error}`);
+                }
+            } else {
+                const error = `Email not register`;
+                return res.redirect(`/login?error=${error}`);
+            }
+        } catch (error) {
+            res.send(error);
+        }
+    }
+
+    //?================================================
     static async home(req, res) {
         try {
             // res.send(`ini home`);
