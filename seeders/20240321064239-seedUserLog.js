@@ -3,11 +3,11 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        const data = require("../data/categories.json").map((el) => {
+        const data = require("../data/userlogs.json").map((el) => {
             el.createdAt = el.updatedAt = new Date();
             return el;
         });
-        await queryInterface.bulkInsert("Categories", data);
+        await queryInterface.bulkInsert("UserLogs", data);
         /**
          * Add seed commands here.
          *
@@ -20,7 +20,8 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.bulkDelete("Categories", data, {});
+        await queryInterface.bulkDelete("UserLogs", data, {});
+
         /**
          * Add commands to revert seed here.
          *
