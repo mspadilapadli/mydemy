@@ -3,6 +3,7 @@ const { param } = require("../routers");
 const { Category, Course, User, UserCourse, UserLog } = require("../models");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const sendVerification = require("../helper/nodemailer");
 
 class Controller {
     //?===== Register & Login =====
@@ -17,9 +18,34 @@ class Controller {
     static async postRegister(req, res) {
         try {
             // console.log(req.body);
+
             const { email, password, role } = req.body;
             await UserLog.create({ email, password, role });
-            res.redirect("/login");
+            sendVerification(email);
+            res.redirect("/verif");
+        } catch (error) {
+            res.send(error);
+        }
+    }
+    static async verif(req, res) {
+        try {
+            let { error } = req.query;
+            res.render("form-verifregis", { error });
+        } catch (error) {
+            res.send(error);
+        }
+    }
+    static async postVerif(req, res) {
+        try {
+            const { codeVerif } = req.body;
+            // console.log(req.body);
+            const error = `Code Verification wrong`;
+            if (codeVerif !== "9876") {
+                return res.redirect(`/verif?error=${error}`);
+                // res.send(error);
+            } else {
+                return res.redirect("/login");
+            }
         } catch (error) {
             res.send(error);
         }
@@ -48,7 +74,13 @@ class Controller {
                     user.password
                 );
                 if (isValidPassword) {
-                    return res.redirect("/courses");
+                    req.session.userId = user.id;
+                    req.session.role = user.role;
+                    if (user.role === "user") {
+                        return res.redirect("/coursesUser");
+                    } else {
+                        return res.redirect("/courses");
+                    }
                 } else {
                     const error = `Invalid email or password`;
                     return res.redirect(`/login?error=${error}`);
@@ -60,6 +92,18 @@ class Controller {
         } catch (error) {
             res.send(error);
         }
+    }
+
+    static logout(req, res) {
+        req.session.destroy();
+        res.redirect("/login");
+
+        // req.session.destroy((err) => {
+        //     if (err) res.send(err);
+        //     else {
+        //         res.redirect("/login");
+        //     }
+        // });
     }
 
     //?================================================
@@ -92,6 +136,27 @@ class Controller {
             res.send(error);
         }
     }
+    static async readCoursesUser(req, res) {
+        try {
+            let { search } = req.query;
+            let option = {};
+            if (search) {
+                option.name = {
+                    [Op.iLike]: `%${search}%`,
+                };
+            }
+            let data = await Course.findAll({
+                include: {
+                    model: Category,
+                },
+                where: option,
+                order: [[`name`, "asc"]],
+            });
+            res.render("show-courses-user", { data });
+        } catch (error) {
+            res.send(error);
+        }
+    }
 
     static async courseDetail(req, res) {
         try {
@@ -103,7 +168,7 @@ class Controller {
             // res.send({ data, usersCourse });
             res.render("show-courses-detail", { data, usersCourse });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             res.send(error);
         }
     }
@@ -153,7 +218,7 @@ class Controller {
                 error,
             });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             res.send(error);
         }
     }
